@@ -27,12 +27,21 @@ public class MysqlThreadRepository implements ThreadRepository{
 		jdbcTemplate = new JdbcTemplate( dataSource );
 	}
 
+	//thread mapper lambda mapping sql result rows to Thread objects
+	private RowMapper<Thread> threadMapperLambda = (rs, rowNum) -> {
+		Thread thread = new Thread();
+		thread.setId( rs.getLong("id") );
+		thread.setTitle( rs.getString("title") );
+		thread.setDt_created( rs.getDate( "dt_created" ) );
+		thread.setDt_updated( rs.getDate( "dt_updated" ) );
+		return thread;
+	};
 
 	@Override
 	public List<Thread> getThreads() {
 
 		String sqlTxt = "SELECT * FROM threads";
-		return jdbcTemplate.query(sqlTxt, new ThreadMapper());
+		return jdbcTemplate.query(sqlTxt, threadMapperLambda );
 	}
 
 
@@ -40,7 +49,7 @@ public class MysqlThreadRepository implements ThreadRepository{
 	public Thread getThread(Long id) {
 
 		String sqlTxt = "SELECT * FROM threads WHERE id=?";
-		return jdbcTemplate.queryForObject(sqlTxt, new ThreadMapper(), id);
+		return jdbcTemplate.queryForObject( sqlTxt, threadMapperLambda, id );
 	}
 
 	@Override
@@ -67,7 +76,7 @@ public class MysqlThreadRepository implements ThreadRepository{
 		//TODO
 	}
 
-
+	/*
 	private class ThreadMapper implements RowMapper<Thread> {
 
 		@Override
@@ -75,4 +84,7 @@ public class MysqlThreadRepository implements ThreadRepository{
 			return new Thread( resultSet.getLong("id"), resultSet.getString("title") );
 		}
 	}
+	*/
+
+	//TODO sql unit test
 }
