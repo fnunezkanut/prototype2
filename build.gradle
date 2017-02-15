@@ -12,6 +12,7 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
 jar {
@@ -20,16 +21,27 @@ jar {
 }
 
 sourceCompatibility = 1.8
+targeCompatibility = 1.8
+
 
 repositories {
 	mavenCentral()
 }
 
-
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
-	compile('org.springframework.boot:spring-boot-starter-web-services')
-	compile('org.springframework.boot:spring-boot-starter-websocket')
-	runtime('mysql:mysql-connector-java')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+
+	compile(
+			'org.springframework.boot:spring-boot-starter-thymeleaf',
+			'org.springframework.boot:spring-boot-starter-web',
+			'org.springframework.boot:spring-boot-starter-web-services',
+			'org.springframework.boot:spring-boot-starter-websocket'
+	)
+
+	runtime(
+			'mysql:mysql-connector-java'
+	)
+
+	testCompile(
+			'org.springframework.boot:spring-boot-starter-test'
+	)
 }

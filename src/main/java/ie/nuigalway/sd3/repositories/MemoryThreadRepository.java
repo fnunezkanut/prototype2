@@ -1,6 +1,8 @@
 package ie.nuigalway.sd3.repositories;
 
 import ie.nuigalway.sd3.entities.Thread;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -9,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Repository
+@Profile("dev")
 public class MemoryThreadRepository implements ThreadRepository{
 
 
