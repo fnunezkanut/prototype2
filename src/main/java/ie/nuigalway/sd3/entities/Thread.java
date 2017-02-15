@@ -15,6 +15,11 @@ public class Thread {
 
     }
 
+    public Thread(Long id, String title) {
+        this.id = id;
+        this.title = title;
+    }
+
     public Thread(Long id, String title, Date dt_created, Date dt_updated) {
         this.id = id;
         this.title = title;
