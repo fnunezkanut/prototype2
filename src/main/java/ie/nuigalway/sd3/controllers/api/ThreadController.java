@@ -1,4 +1,4 @@
-package ie.nuigalway.sd3.controllers;
+package ie.nuigalway.sd3.controllers.api;
 
 import ie.nuigalway.sd3.entities.Thread;
 import ie.nuigalway.sd3.services.ThreadService;
