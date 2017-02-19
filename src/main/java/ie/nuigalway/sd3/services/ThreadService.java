@@ -19,4 +19,9 @@ public class ThreadService {
 
         return threadRepository.getThreads();
     }
+
+    public Thread getThread(Long threadId){
+
+        return threadRepository.getThread( threadId );
+    }
 }
