@@ -59,7 +59,7 @@ public class MysqlThreadRepository implements ThreadRepository{
 	}
 
 	@Override
-	public Long createThread(String title) {
+	public Long createThread( Thread thread ) {
 
 		return 0L; //TODO
 	}

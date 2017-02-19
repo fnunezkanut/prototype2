@@ -24,4 +24,10 @@ public class ThreadService {
 
         return threadRepository.getThread( threadId );
     }
+
+    public Long createThread( Thread thread ){
+
+        return threadRepository.createThread( thread );
+    }
+
 }
