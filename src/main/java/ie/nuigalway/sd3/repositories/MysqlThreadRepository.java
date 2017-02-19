@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-@Profile("prod")
+@Profile("dev")
 public class MysqlThreadRepository implements ThreadRepository{
 
 	//our jdbc tempate

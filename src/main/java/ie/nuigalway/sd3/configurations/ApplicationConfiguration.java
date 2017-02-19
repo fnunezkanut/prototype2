@@ -26,9 +26,9 @@ public class ApplicationConfiguration {
 	}
 
 
-	//our production mysql connection
+	//development mysql connection
 	@Bean(name = "dataSource")
-	@Profile("prod")
+	@Profile("dev")
 	public DataSource dataSourceForProd() {
 
 		BasicDataSource dataSource = new BasicDataSource();

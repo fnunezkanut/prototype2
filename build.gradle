@@ -32,7 +32,6 @@ repositories {
 dependencies {
 
 	compile(
-			'org.springframework.boot:spring-boot-starter-thymeleaf',
 			'org.springframework.boot:spring-boot-starter-web',
 			'org.springframework.boot:spring-boot-starter-web-services',
 			'org.springframework.boot:spring-boot-starter-websocket',
@@ -42,8 +41,7 @@ dependencies {
 	)
 
 	runtime(
-			'com.h2database:h2:1.4.190',
-			'mysql:mysql-connector-java:5.1.37'
+			'mysql:mysql-connector-java:6.0.5'
 	)
 
 	testCompile(
