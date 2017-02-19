@@ -28,10 +28,10 @@ public class ThreadController {
 		return threadService.getThread( threadId );
 	}
 
-
+	//creating a thread with a title
 	@RequestMapping(method=RequestMethod.POST, value="/api/threads")
-	public void createThread( @RequestBody Thread thread ){
+	public Long createThread( @RequestParam("title") String title ){
 
-		threadService.createThread( thread );
+		return threadService.createThread( title );
 	}
 }

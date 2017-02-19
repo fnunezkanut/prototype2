@@ -5,13 +5,20 @@ import ie.nuigalway.sd3.entities.Thread;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
-import java.math.BigDecimal;
-import java.sql.ResultSet;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 @Repository
@@ -59,9 +66,28 @@ public class MysqlThreadRepository implements ThreadRepository{
 	}
 
 	@Override
-	public Long createThread( Thread thread ) {
+	public Long createThread( String title ) {
 
-		return 0L; //TODO
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		String sqlTxt = "INSERT INTO threads(title) VALUES(?)";
+
+		try{
+
+			jdbcTemplate.update((Connection connection) -> {
+				PreparedStatement ps = connection.prepareStatement(sqlTxt, Statement.RETURN_GENERATED_KEYS);
+				ps.setString(1, title );
+				return ps;
+
+			}, keyHolder);
+		}
+		catch (Exception e){
+
+			e.printStackTrace();
+		}
+
+		Long insertId = keyHolder.getKey().longValue();
+
+		return insertId;
 	}
 
 	@Override

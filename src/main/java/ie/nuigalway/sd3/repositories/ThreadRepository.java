@@ -12,7 +12,7 @@ public interface ThreadRepository {
 
     int getNumberOfThreads();
 
-    Long createThread(Thread thread);
+    Long createThread(String title);
 
     void deleteThread(Long id);
 
