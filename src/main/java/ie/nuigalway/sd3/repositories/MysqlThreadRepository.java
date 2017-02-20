@@ -68,7 +68,11 @@ public class MysqlThreadRepository implements ThreadRepository{
 		return threads;
 	}
 
+<<<<<<< HEAD
 	//get a single thread given its unique id
+=======
+
+>>>>>>> origin/master
 	@Override
 	public Thread getThread(Long id) {
 
@@ -97,6 +101,7 @@ public class MysqlThreadRepository implements ThreadRepository{
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		String sqlTxt = "INSERT INTO threads(title,dt_created,dt_updated) VALUES(?,?,?)";
 
+<<<<<<< HEAD
 		//current time used at insert time
 		java.util.Date dt = new java.util.Date();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -104,6 +109,21 @@ public class MysqlThreadRepository implements ThreadRepository{
 
 		//try to insert entry to mysql
 		try{
+=======
+		//try to insert entry to mysql
+		try{
+
+			jdbcTemplate.update(
+				(Connection connection) -> {
+					PreparedStatement ps = connection.prepareStatement(sqlTxt, Statement.RETURN_GENERATED_KEYS);
+					ps.setString(1, title );
+					return ps;
+				},
+				keyHolder
+			);
+		}
+		catch (Exception e){
+>>>>>>> origin/master
 
 			jdbcTemplate.update(
 				(Connection connection) -> {
@@ -141,6 +161,7 @@ public class MysqlThreadRepository implements ThreadRepository{
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
 
+<<<<<<< HEAD
 		//try to insert entry to mysql
 		try{
 
@@ -163,5 +184,7 @@ public class MysqlThreadRepository implements ThreadRepository{
 		}
 	}
 
+=======
+>>>>>>> origin/master
 	//TODO sql unit test
 }
