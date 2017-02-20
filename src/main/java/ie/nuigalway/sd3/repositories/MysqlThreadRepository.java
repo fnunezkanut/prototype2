@@ -5,24 +5,21 @@ import ie.nuigalway.sd3.entities.Thread;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
 @Repository
 @Profile("dev")
+@Transactional
 public class MysqlThreadRepository implements ThreadRepository{
 
 	//our jdbc tempate
@@ -52,6 +49,7 @@ public class MysqlThreadRepository implements ThreadRepository{
 	}
 
 
+
 	@Override
 	public Thread getThread(Long id) {
 
@@ -71,20 +69,24 @@ public class MysqlThreadRepository implements ThreadRepository{
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		String sqlTxt = "INSERT INTO threads(title) VALUES(?)";
 
+		//try to insert entry to mysql
 		try{
 
-			jdbcTemplate.update((Connection connection) -> {
-				PreparedStatement ps = connection.prepareStatement(sqlTxt, Statement.RETURN_GENERATED_KEYS);
-				ps.setString(1, title );
-				return ps;
-
-			}, keyHolder);
+			jdbcTemplate.update(
+				(Connection connection) -> {
+					PreparedStatement ps = connection.prepareStatement(sqlTxt, Statement.RETURN_GENERATED_KEYS);
+					ps.setString(1, title );
+					return ps;
+				},
+				keyHolder
+			);
 		}
 		catch (Exception e){
 
 			e.printStackTrace();
 		}
 
+		//get the autoincrement id from the insert statement
 		Long insertId = keyHolder.getKey().longValue();
 
 		return insertId;
@@ -101,16 +103,6 @@ public class MysqlThreadRepository implements ThreadRepository{
 
 		//TODO
 	}
-
-	/*
-	private class ThreadMapper implements RowMapper<Thread> {
-
-		@Override
-		public Thread mapRow(ResultSet resultSet, int i) throws SQLException {
-			return new Thread( resultSet.getLong("id"), resultSet.getString("title") );
-		}
-	}
-	*/
 
 	//TODO sql unit test
 }
