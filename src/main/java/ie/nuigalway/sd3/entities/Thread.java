@@ -97,4 +97,16 @@ public class Thread {
     public int hashCode() {
         return getId().hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "Thread{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", dt_created=" + dt_created +
+                ", dt_updated=" + dt_updated +
+                ", customer_user_id=" + customer_user_id +
+                ", support_user_id=" + support_user_id +
+                '}';
+    }
 }

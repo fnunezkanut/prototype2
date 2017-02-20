@@ -1,0 +1,1 @@
+SELECT COUNT(*) FROM threads_test;

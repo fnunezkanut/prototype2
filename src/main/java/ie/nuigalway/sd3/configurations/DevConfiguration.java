@@ -11,24 +11,16 @@ import org.springframework.core.env.Environment;
 
 import javax.sql.DataSource;
 
-
+@Profile("dev")
 @Configuration
 @ComponentScan(basePackages = "ie.nuigalway.sd3")
-public class ApplicationConfiguration {
+public class DevConfiguration {
 
 	@Autowired
 	private Environment env;
 
-	@Bean
-	public String myMessage( @Value("${my.messageValue}") String messageValue ){
-
-		return messageValue;
-	}
-
-
 	//development mysql connection
 	@Bean(name = "dataSource")
-	@Profile("dev")
 	public DataSource dataSourceForProd() {
 
 		BasicDataSource dataSource = new BasicDataSource();
