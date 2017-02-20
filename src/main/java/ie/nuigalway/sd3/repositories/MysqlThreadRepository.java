@@ -142,6 +142,17 @@ public class MysqlThreadRepository implements ThreadRepository{
 		java.util.Date dt = new java.util.Date();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
+		//try to update entry to mysql
+		try {
+
+			jdbcTemplate.update(sqlTxt, dateFormat.format( dt ), id );
+		}
+		catch (InvalidResultSetAccessException e) {
+			throw new RuntimeException(e);
+		}
+		catch (DataAccessException e) {
+			throw new RuntimeException(e);
+		}
 
 	}
 

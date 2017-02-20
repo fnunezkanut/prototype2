@@ -34,4 +34,11 @@ public class ThreadController {
 
 		return threadService.createThread( title );
 	}
+
+	//update the threads timestamp
+	@RequestMapping(method=RequestMethod.POST, value="/api/threads/{threadId}/updated")
+	public void updateDtUpdated( @PathVariable("threadId") Long threadId ){
+
+		threadService.updateDtUpdated( threadId );
+	}
 }
