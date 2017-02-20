@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Repository
-@Profile("dev")
+@Profile({"default","test","prod"})
 @Transactional
 public class MysqlThreadRepository implements ThreadRepository{
 

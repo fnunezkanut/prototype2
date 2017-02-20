@@ -11,12 +11,13 @@ import javax.sql.DataSource;
 
 
 @Repository
-@Profile("dev")
+@Profile({"default","test","prod"})
 @Transactional
 public class MysqlUserRepository implements UserRepository{
 
-	//our jdbc tempate
+	//our jdbc template
 	private JdbcTemplate jdbcTemplate;
+
 
 	@Autowired
 	public MysqlUserRepository( DataSource dataSource ){

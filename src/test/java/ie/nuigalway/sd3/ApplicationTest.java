@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles( profiles={"dev","prod"} )
+@ActiveProfiles( profiles={"default"} )
 public class ApplicationTest {
 
 	private MockMvc mockMvc;
