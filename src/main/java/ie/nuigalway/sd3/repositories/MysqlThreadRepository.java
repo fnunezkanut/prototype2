@@ -4,25 +4,26 @@ import ie.nuigalway.sd3.entities.Thread;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.InvalidResultSetAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Repository
 @Profile("dev")
+@Transactional
 public class MysqlThreadRepository implements ThreadRepository{
 
 	//our jdbc tempate
@@ -44,73 +45,123 @@ public class MysqlThreadRepository implements ThreadRepository{
 		return thread;
 	};
 
+	//fetches all threads
 	@Override
 	public List<Thread> getThreads() {
 
 		String sqlTxt = "SELECT * FROM threads";
-		return jdbcTemplate.query(sqlTxt, threadMapperLambda );
+		List<Thread> threads;
+
+		//try to fetch all threads
+		try{
+
+			threads =  jdbcTemplate.query(sqlTxt, threadMapperLambda );
+		}
+		catch (InvalidResultSetAccessException e) {
+			throw new RuntimeException(e);
+		}
+		catch (DataAccessException e) {
+			throw new RuntimeException(e);
+		}
+
+
+		return threads;
 	}
 
-
+	//get a single thread given its unique id
 	@Override
 	public Thread getThread(Long id) {
 
+		Thread thread;
 		String sqlTxt = "SELECT * FROM threads WHERE id=?";
-		return jdbcTemplate.queryForObject( sqlTxt, threadMapperLambda, id );
+
+		//try to fetch a single entry from table
+		try{
+
+			thread =  jdbcTemplate.queryForObject( sqlTxt, threadMapperLambda, id );
+		}
+		catch (InvalidResultSetAccessException e) {
+			throw new RuntimeException(e);
+		}
+		catch (DataAccessException e) {
+			throw new RuntimeException(e);
+		}
+
+		return thread;
 	}
 
-	@Override
-	public int getNumberOfThreads() {
-
-		return 0; //TODO
-	}
-
+	//create a new thread given a title and return autoincremented unique id
 	@Override
 	public Long createThread( String title ) {
 
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-		String sqlTxt = "INSERT INTO threads(title) VALUES(?)";
+		String sqlTxt = "INSERT INTO threads(title,dt_created,dt_updated) VALUES(?,?,?)";
 
+		//current time used at insert time
+		java.util.Date dt = new java.util.Date();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+
+		//try to insert entry to mysql
 		try{
 
-			jdbcTemplate.update((Connection connection) -> {
-				PreparedStatement ps = connection.prepareStatement(sqlTxt, Statement.RETURN_GENERATED_KEYS);
-				ps.setString(1, title );
-				return ps;
-
-			}, keyHolder);
+			jdbcTemplate.update(
+				(Connection connection) -> {
+					PreparedStatement ps = connection.prepareStatement(sqlTxt, Statement.RETURN_GENERATED_KEYS);
+					ps.setString(1, title );
+					ps.setString(2, dateFormat.format( dt ) );
+					ps.setString(3, dateFormat.format( dt ) );
+					return ps;
+				},
+				keyHolder
+			);
 		}
-		catch (Exception e){
-
-			e.printStackTrace();
+		catch (InvalidResultSetAccessException e) {
+			throw new RuntimeException(e);
+		}
+		catch (DataAccessException e) {
+			throw new RuntimeException(e);
 		}
 
+		//get the autoincrement id from the insert statement
 		Long insertId = keyHolder.getKey().longValue();
 
 		return insertId;
 	}
 
+
+	//updates the last udpated datetime for a row
 	@Override
-	public void deleteThread(Long id) {
+	public void updateDtUpdated( Long id ) {
 
-		//TODO
-	}
+		String sqlTxt = "UPDATE threads SET dt_updated=? WHERE id=?";
 
-	@Override
-	public void updateThread(Thread thread) {
+		//current time used at insert time
+		java.util.Date dt = new java.util.Date();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
-		//TODO
-	}
 
-	/*
-	private class ThreadMapper implements RowMapper<Thread> {
+		//try to insert entry to mysql
+		try{
 
-		@Override
-		public Thread mapRow(ResultSet resultSet, int i) throws SQLException {
-			return new Thread( resultSet.getLong("id"), resultSet.getString("title") );
+			jdbcTemplate.update(
+					(Connection connection) -> {
+						PreparedStatement ps = connection.prepareStatement(sqlTxt, Statement.RETURN_GENERATED_KEYS);
+						ps.setString(1, title );
+						ps.setString(2, dateFormat.format( dt ) );
+						ps.setString(3, dateFormat.format( dt ) );
+						return ps;
+					},
+					keyHolder
+			);
+		}
+		catch (InvalidResultSetAccessException e) {
+			throw new RuntimeException(e);
+		}
+		catch (DataAccessException e) {
+			throw new RuntimeException(e);
 		}
 	}
-	*/
 
 	//TODO sql unit test
 }

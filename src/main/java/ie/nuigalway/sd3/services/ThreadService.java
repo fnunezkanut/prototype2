@@ -14,6 +14,7 @@ public class ThreadService {
 
     @Autowired
     private ThreadRepository threadRepository;
+    //a repository is chosen depending on which profile is run (dev or prod)
 
     public List<Thread> getThreads(){
 
@@ -30,4 +31,8 @@ public class ThreadService {
         return threadRepository.createThread( title );
     }
 
+    public void updateDtUpdated( Long threadId ){
+
+        threadRepository.updateDtUpdated( threadId );
+    }
 }
