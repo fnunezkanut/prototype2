@@ -35,6 +35,7 @@ dependencies {
 
 	compile(
 			'org.jtwig:jtwig-spring-boot-starter:5.85.3.RELEASE',
+			'org.jtwig:jtwig-hot-reloading-extension:5.85.3.RELEASE',
 			'org.springframework.boot:spring-boot-starter-web',
 			'org.springframework.boot:spring-boot-starter-web-services',
 			'org.springframework.boot:spring-boot-starter-websocket',
