@@ -3,6 +3,9 @@ package ie.nuigalway.sd3.configurations;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.jtwig.environment.EnvironmentConfigurationBuilder;
 import org.jtwig.spring.JtwigViewResolver;
+import org.jtwig.spring.asset.SpringAssetExtension;
+import org.jtwig.spring.asset.resolver.AssetResolver;
+import org.jtwig.spring.asset.resolver.BaseAssetResolver;
 import org.jtwig.spring.boot.config.JtwigViewResolverConfigurer;
 import org.jtwig.web.servlet.JtwigRenderer;
 import org.jtwig.hot.reloading.HotReloadingExtension;
@@ -13,13 +16,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.sql.DataSource;
 
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "ie.nuigalway.sd3")
-public class ApplicationConfiguration implements JtwigViewResolverConfigurer {
+public class ApplicationConfiguration extends WebMvcConfigurerAdapter implements JtwigViewResolverConfigurer {
 
 	@Autowired
 	private Environment env;
@@ -47,11 +52,28 @@ public class ApplicationConfiguration implements JtwigViewResolverConfigurer {
 				new JtwigRenderer(
 					EnvironmentConfigurationBuilder.configuration()
 													.extensions()
+													.add(new SpringAssetExtension())
+													.and()
+													.extensions()
 													.add(new HotReloadingExtension())
 													.and()
 													.build()
 			)
 		);
 		viewResolver.setSuffix(".twig");
+	}
+
+
+	//the bean and override below configures static file loading from public
+	@Bean
+	public AssetResolver assetResolver () {
+		BaseAssetResolver assetResolver = new BaseAssetResolver();
+		assetResolver.setPrefix("public");
+		return assetResolver;
+	}
+
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("static/**").addResourceLocations("classpath:static/");
 	}
 }

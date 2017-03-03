@@ -34,8 +34,9 @@ repositories {
 dependencies {
 
 	compile(
-			'org.jtwig:jtwig-spring-boot-starter:5.85.3.RELEASE',
-			'org.jtwig:jtwig-hot-reloading-extension:5.85.3.RELEASE',
+			'org.jtwig:jtwig-spring-boot-starter:5.+',
+			'org.jtwig:jtwig-hot-reloading-extension:5.+',
+			'org.jtwig:jtwig-spring-asset-extension:5.+',
 			'org.springframework.boot:spring-boot-starter-web',
 			'org.springframework.boot:spring-boot-starter-web-services',
 			'org.springframework.boot:spring-boot-starter-websocket',
@@ -46,10 +47,6 @@ dependencies {
 			"org.webjars:webjars-locator",
 			"org.webjars:sockjs-client:1.1.2",
 			"org.webjars:stomp-websocket:2.3.3",
-			"org.webjars:bootstrap:3.3.7-1",
-			"org.webjars:html5shiv:3.7.3",
-			"org.webjars:respond:1.4.2",
-			"org.webjars:jquery:3.1.1-1"
 	)
 
 

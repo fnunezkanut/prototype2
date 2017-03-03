@@ -107,18 +107,11 @@
                 },
                 success: function( data, textStatus, xhr ){
 
-                    $('#name_wrapper__' + data.id ).empty().append('<a id="name_link__' + data.id + '" class="fNameLink" href="' + data.url + '" title="' + data.fname + '"><i id="name_icon__' + data.id + '" class="fa ' + data.icon + ' fa-fw"></i>&nbsp;' + data.fname + '</a>');
-
-                    $('#edit_btn__' + data.id ).removeClass("disabled");
-                    $('#edit_btn__' + data.id ).on("click", function(){
-
-                        renameFile(  data.id,  data.fname  );
-                    } );
 
                 },
                 error: function( xhr, textStatus, errorThrown ){
 
-                    window.location = _currentUrl;
+
                 }
             });
         });

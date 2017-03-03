@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/static/favicon.ico">
+
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/bootstrap/3.3.7/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Roboto" rel="stylesheet">
+
+    <!-- css for this app -->
+    <link href="/static/css/main.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    {% block extra_css %}
+
+    {% endblock %}
+{% endblock %}
+</head>
+
+<body>
+{% block body %}
+
+    <div class="container-fluid">
+
+
+        <div class="header clearfix">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    <li role="presentation"><a href="/" class="active">Home</a></li>
+                    <li role="presentation"><a href="/">About</a></li>
+                    <li role="presentation"><a href="/">Menu option 3</a></li>
+                    <li role="presentation"><a href="/contact" id="contact-support">Contact Support [Live Chat]</a></li>
+                </ul>
+            </nav>
+            <h3 id="logo">Some Company name</h3>
+        </div>
+
+        {% block content %}
+
+
+        {% endblock %}
+
+    </div>
+
+{% endblock %}
+</body>
+
+<script src="https://cdn.jsdelivr.net/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+{% block extra_js %}
+
+{% endblock %}
+
+</html>
