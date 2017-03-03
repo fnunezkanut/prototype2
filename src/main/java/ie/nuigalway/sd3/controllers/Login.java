@@ -14,7 +14,7 @@ public class Login {
 
 	//shows login page
 	@RequestMapping("/login")
-	public String subaction(  ModelMap model ){
+	public String action(  ModelMap model ){
 
 		//pass a random uuid to the view template
 		model.addAttribute("randomUuid", myUuid );

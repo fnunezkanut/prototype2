@@ -62,11 +62,10 @@
                 $.ajax({
                     type: 		"POST",
                     dataType: 	"json",
-                    contentType: 'application/json; charset=UTF-8',
                     url: 		_loginUrl,
                     data: 		{
-                        "email"			:	email,
-                        "password"      :   password
+                        "email"		:	email,
+                        "pass"      :   password
                     },
                     success: function( data, textStatus, xhr ){
 

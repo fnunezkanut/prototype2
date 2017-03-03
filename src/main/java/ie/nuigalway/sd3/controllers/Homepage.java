@@ -12,7 +12,7 @@ public class Homepage {
 	String myUuid;
 
 	@RequestMapping("/")
-	public String subaction( ModelMap model ){
+	public String action( ModelMap model ){
 
 		//pass a random uuid to the view template
 		model.addAttribute("randomUuid", myUuid );
