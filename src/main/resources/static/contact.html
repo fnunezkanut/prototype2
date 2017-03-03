@@ -33,9 +33,9 @@
     <div class="header clearfix">
         <nav>
             <ul class="nav nav-pills pull-right">
-                <li role="presentation"><a href="index.html">Home</a></li>
-                <li role="presentation"><a href="index.html">About</a></li>
-                <li role="presentation"><a href="index.html">Menu option 3</a></li>
+                <li role="presentation"><a href="../templates/index.html">Home</a></li>
+                <li role="presentation"><a href="../templates/index.html">About</a></li>
+                <li role="presentation"><a href="../templates/index.html">Menu option 3</a></li>
                 <li role="presentation"><a href="contact.html" id="contact-support-white">Contact Support [Live Chat]</a></li>
             </ul>
         </nav>
@@ -53,15 +53,18 @@
             <div class="panel-body" style="text-align: left;">
 
                 <form id="contactForm">
+
                     <div class="form-group">
-                        <label for="nameFld">Your Name</label>
-                        <input type="text" class="form-control" id="nameFld" placeholder="Full Name">
+                        <label for="emailFld">Email:</label>
+                        <input type="email" class="form-control" id="emailFld" placeholder="Customer email" />
                     </div>
+
                     <div class="form-group">
-                        <label for="emailFld">Email address</label>
-                        <input type="email" class="form-control" id="emailFld" placeholder="Email">
+                        <label for="passwordFld">Password</label>
+                        <input type="password" class="form-control" id="passwordFld" />
                     </div>
-                    <button type="submit" class="btn btn-lg btn-primary btn-block">Continue</button>
+
+                    <button type="submit" class="btn btn-lg btn-primary btn-block">Customer Login</button>
                 </form>
 
             </div>
@@ -79,18 +82,45 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
+        var _loginUrl = 'http://localhost:8080/login';
+        var _currentUrl = 'http://localhost:8080/contact.html';
+
 
         $( "#contactForm" ).submit(function( event ) {
 
             event.preventDefault();
 
-            var name = $('#nameFld').val();
-            var email = $('#emailFld').val();
+            var password    = $('#passwordFld').val();
+            var email       = $('#emailFld').val();
 
             //clear container
             $('#chatContainer').empty().append('');
 
-            alert( name + email );
+            //send ajax request
+            $.ajax({
+                type: 		"POST",
+                dataType: 	"json",
+                url: 		_loginUrl,
+                data: 		{
+                    "email"			:	email,
+                    "password"      :   password
+                },
+                success: function( data, textStatus, xhr ){
+
+                    $('#name_wrapper__' + data.id ).empty().append('<a id="name_link__' + data.id + '" class="fNameLink" href="' + data.url + '" title="' + data.fname + '"><i id="name_icon__' + data.id + '" class="fa ' + data.icon + ' fa-fw"></i>&nbsp;' + data.fname + '</a>');
+
+                    $('#edit_btn__' + data.id ).removeClass("disabled");
+                    $('#edit_btn__' + data.id ).on("click", function(){
+
+                        renameFile(  data.id,  data.fname  );
+                    } );
+
+                },
+                error: function( xhr, textStatus, errorThrown ){
+
+                    window.location = _currentUrl;
+                }
+            });
         });
     });
 </script>
