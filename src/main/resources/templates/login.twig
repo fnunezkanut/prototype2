@@ -1,0 +1,82 @@
+{% extends "_master.twig" %}
+{# using master template #}
+
+
+{% block title %}Login{%endblock%}
+
+
+{% block content %}
+    <br /><br />
+
+    <div class="row" id="chatContainer">
+
+        <div id="chatPanel" class="panel panel-default text-center">
+            <div class="panel-heading">
+                <h1 class="panel-title">Contact customer support</h1>
+            </div>
+            <div class="panel-body" style="text-align: left;">
+
+                <form id="contactForm">
+
+                    <div class="form-group">
+                        <label for="emailFld">Email:</label>
+                        <input type="email" class="form-control" id="emailFld" placeholder="Customer email" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="passwordFld">Password</label>
+                        <input type="password" class="form-control" id="passwordFld" />
+                    </div>
+
+                    <button type="submit" class="btn btn-lg btn-primary btn-block">Customer Login</button>
+                </form>
+
+            </div>
+        </div>
+
+
+    </div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            var _loginUrl = 'http://localhost:8080/login.json';
+            var _currentUrl = 'http://localhost:8080/login';
+
+
+            $( "#contactForm" ).submit(function( event ) {
+
+                event.preventDefault();
+
+                var password    = $('#passwordFld').val();
+                var email       = $('#emailFld').val();
+
+                //clear container
+                $('#chatContainer').empty().append('');
+
+                //send ajax request
+                $.ajax({
+                    type: 		"POST",
+                    dataType: 	"json",
+                    url: 		_loginUrl,
+                    data: 		{
+                        "email"			:	email,
+                        "password"      :   password
+                    },
+                    success: function( data, textStatus, xhr ){
+
+
+                    },
+                    error: function( xhr, textStatus, errorThrown ){
+
+
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
