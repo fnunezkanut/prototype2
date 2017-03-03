@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class Login {
 
+	//random uuid
 	@Value("${my.uuid}")
 	String myUuid;
 
+	//shows login page
 	@RequestMapping("/login")
 	public String subaction(  ModelMap model ){
 
