@@ -2,7 +2,6 @@ package ie.nuigalway.sd3.repositories;
 
 import ie.nuigalway.sd3.entities.User;
 
-import java.util.List;
 
 public interface UserRepository {
 

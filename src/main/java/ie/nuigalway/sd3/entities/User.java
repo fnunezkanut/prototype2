@@ -9,7 +9,7 @@ public class User {
     private String email;
     private String pass;
     private Date dt_created;
-
+    private boolean is_support;
 
     //constructors
     public User() {
@@ -56,6 +56,14 @@ public class User {
 
     public void setPass( String pass ) {
         this.pass = pass;
+    }
+
+    public boolean getIsSupport() {
+        return is_support;
+    }
+
+    public void setIsSupport( boolean is_support ) {
+        this.is_support = is_support;
     }
     //getters and setters
 
