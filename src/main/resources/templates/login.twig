@@ -45,9 +45,9 @@
         $(document).ready(function(){
 
 
-            var _chatUrl    = 'http://localhost:8080/chat';
-            var _currentUrl = 'http://localhost:8080/login';
-            var _loginUrl   = 'http://localhost:8080/login/submit';
+            var _chatUrl    = '{{ app_BASE_URL }}chat';
+            var _currentUrl = '{{ app_BASE_URL }}login';
+            var _loginUrl   = '{{ app_BASE_URL }}login/submit';
 
 
             $( "#contactForm" ).submit(function( event ) {

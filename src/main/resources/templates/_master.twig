@@ -9,7 +9,7 @@
 
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="/static/favicon.ico">
+    <link rel="icon" href="{{ app_BASE_URL }}static/favicon.ico">
 
     <title>{% block title %}{% endblock %}</title>
 
@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Roboto" rel="stylesheet">
 
     <!-- css for this app -->
-    <link href="/static/css/main.css?random={{ randomUuid }}" rel="stylesheet">
+    <link href="{{ app_BASE_URL }}static/css/main.css?random={{ app_RANDOM }}" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -42,10 +42,10 @@
         <div class="header clearfix">
             <nav>
                 <ul class="nav nav-pills pull-right">
-                    <li role="presentation"><a href="/" class="active">Home</a></li>
-                    <li role="presentation"><a href="/">About</a></li>
-                    <li role="presentation"><a href="/">Menu option 3</a></li>
-                    <li role="presentation"><a href="/login" id="contact-support">Contact Support [Live Chat]</a></li>
+                    <li role="presentation"><a href="{{ app_BASE_URL }}" class="active">Home</a></li>
+                    <li role="presentation"><a href="{{ app_BASE_URL }}">About</a></li>
+                    <li role="presentation"><a href="{{ app_BASE_URL }}">Menu option 3</a></li>
+                    <li role="presentation"><a href="{{ app_BASE_URL }}login" id="contact-support">Contact Support [Live Chat]</a></li>
                 </ul>
             </nav>
             <h3 id="logo">Some Company name</h3>

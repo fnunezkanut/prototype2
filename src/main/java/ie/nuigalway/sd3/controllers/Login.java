@@ -19,9 +19,12 @@ import java.util.HashMap;
 @Controller
 public class Login {
 
-	//random uuid
-	@Value("${my.uuid}")
-	String myUuid;
+	//from .properties
+	@Value("${app.RANDOM}")
+	String app_RANDOM;
+	@Value("${app.BASE_URL}")
+	String app_BASE_URL;
+
 
 	@Autowired
 	private UserService userService;
@@ -34,9 +37,11 @@ public class Login {
 	)
 	public String action( ModelMap model, HttpSession session ) throws ApplicationException {
 
-		//pass a random uuid to the view template
-		model.addAttribute("randomUuid", myUuid );
+		//pass data to twig view
+		model.addAttribute("app_RANDOM", app_RANDOM );
+		model.addAttribute("app_BASE_URL", app_BASE_URL );
 
+		//return view name
 		return "login";
 	}
 
