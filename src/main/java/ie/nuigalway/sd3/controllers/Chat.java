@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class Homepage {
+public class Chat {
 
 	@Value("${my.uuid}")
 	String myUuid;
 
-	@RequestMapping("/")
+	@RequestMapping("/chat")
 	public String action( ModelMap model, HttpSession session ){
 
 		//pass a random uuid to the view template
 		model.addAttribute("randomUuid", myUuid );
 
-		return "homepage";
+		return "chat";
 	}
 }

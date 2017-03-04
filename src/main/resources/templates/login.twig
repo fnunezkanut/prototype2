@@ -44,8 +44,10 @@
     <script type="text/javascript">
         $(document).ready(function(){
 
-            var _loginUrl = 'http://localhost:8080/login/submit';
+
+            var _chatUrl    = 'http://localhost:8080/chat';
             var _currentUrl = 'http://localhost:8080/login';
+            var _loginUrl   = 'http://localhost:8080/login/submit';
 
 
             $( "#contactForm" ).submit(function( event ) {
@@ -56,7 +58,7 @@
                 var email       = $('#emailFld').val();
 
                 //clear container
-                $('#chatContainer').empty().append('');
+                $('#chatContainer').empty().append('signing in...');
 
                 //send ajax request
                 $.ajax({
@@ -69,11 +71,20 @@
                     },
                     success: function( data, textStatus, xhr ){
 
+                        if ( data.status == 'ok' ) {
 
+                            window.location = _chatUrl;
+                        }
+                        else{
+
+                            alert("an error has occurred, try again");
+                            window.location = _currentUrl;
+                        }
                     },
                     error: function( xhr, textStatus, errorThrown ){
 
-
+                        alert("an error has occurred, try again");
+                        window.location = _currentUrl;
                     }
                 });
             });

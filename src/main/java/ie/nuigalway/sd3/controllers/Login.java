@@ -64,13 +64,15 @@ public class Login {
 		try{
 
 			dbUser = userService.getUserByEmailAndPasshash( email, passwordHash );
-		}
-		catch (Exception e){
 
-			//TODO better exception handling here
+			//save the user in session
+			session.setAttribute( "currentUser", dbUser );
+		}
+		catch (Exception e){ //TODO better exception catching here
+
 			throw new ApplicationException( e.getMessage() );
 		}
-		
+
 
 		//output successful json
 		HashMap<String,String> jsonResponse = new HashMap<>(  );
