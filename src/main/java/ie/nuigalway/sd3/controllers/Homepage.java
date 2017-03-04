@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class Homepage {
 
@@ -12,10 +14,12 @@ public class Homepage {
 	String myUuid;
 
 	@RequestMapping("/")
-	public String action( ModelMap model ){
+	public String action( ModelMap model, HttpSession session ){
 
 		//pass a random uuid to the view template
 		model.addAttribute("randomUuid", myUuid );
+
+		session.setAttribute( "test", "testing" );
 
 		return "homepage";
 	}

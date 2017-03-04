@@ -15,8 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
-import org.springframework.http.MediaType;
-import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -25,11 +24,14 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebMvc
+@EnableRedisHttpSession
 @ComponentScan(basePackages = "ie.nuigalway.sd3")
 public class ApplicationConfiguration extends WebMvcConfigurerAdapter implements JtwigViewResolverConfigurer {
 
 	@Autowired
 	private Environment env;
+
+
 
 	//mysql connection datasource
 	@Bean(name = "dataSource")
@@ -79,19 +81,4 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter implements
 		registry.addResourceHandler("static/**").addResourceLocations("classpath:static/");
 	}
 	//the bean and override above configures static file loading from public
-
-/*
-	//content negotiation
-	@Override
-	public void configureContentNegotiation( ContentNegotiationConfigurer configurer) {
-
-		configurer.favorPathExtension(true).
-				ignoreAcceptHeader(true).
-				useJaf(false).
-				defaultContentType( MediaType.TEXT_HTML).
-				mediaType("html", MediaType.TEXT_HTML).
-				mediaType("xml", MediaType.APPLICATION_XML).
-				mediaType("json", MediaType.APPLICATION_JSON);
-	}
-	*/
 }
