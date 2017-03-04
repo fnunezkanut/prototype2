@@ -35,7 +35,17 @@ public class LoginSubmit {
 		String passwordHash = DigestUtils.md5Hex(pass).toUpperCase();
 
 
-		User dbUser = userService.getUserByEmailAndPasshash( email, passwordHash );
+		//fetch user from database given email and passhash
+		User dbUser = new User();
+		try{
+
+			dbUser = userService.getUserByEmailAndPasshash( email, passwordHash );
+		}
+		catch (Exception e){
+
+			//TODO better exception handling here
+		}
+
 
 
 		HashMap<String,String> jsonResponse = new HashMap<>(  );

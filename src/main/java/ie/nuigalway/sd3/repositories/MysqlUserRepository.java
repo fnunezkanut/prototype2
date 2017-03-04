@@ -72,7 +72,7 @@ public class MysqlUserRepository implements UserRepository{
 		}
 
 		//TODO better exceptions
-		
+
 		return user;
 	}
 
