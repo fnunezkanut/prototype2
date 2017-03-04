@@ -1,5 +1,6 @@
 package ie.nuigalway.sd3.configurations;
 
+import ie.nuigalway.sd3.controllers.Error;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.jtwig.environment.EnvironmentConfigurationBuilder;
 import org.jtwig.spring.JtwigViewResolver;
