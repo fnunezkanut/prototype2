@@ -2,7 +2,6 @@ package ie.nuigalway.sd3.controllers;
 
 import ie.nuigalway.sd3.entities.User;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class Chat {
+public class Support {
 
 	//from .properties
 	@Value("${app.RANDOM}")
@@ -21,7 +20,7 @@ public class Chat {
 
 
 
-	@RequestMapping("/chat")
+	@RequestMapping("/support")
 	public ModelAndView action(
 			ModelMap model,
 			HttpSession session
@@ -47,9 +46,9 @@ public class Chat {
 
 
 			//the view shown depends on whether the user is support person or a normal customer
-			String viewName = "chat/customer";
+			String viewName = "support/customer";
 			if( currentUser.getIsSupport() == true ){
-				viewName = "chat/support";
+				viewName = "support/admin";
 			}
 
 			//return view name

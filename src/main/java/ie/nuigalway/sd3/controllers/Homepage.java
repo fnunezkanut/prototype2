@@ -39,8 +39,8 @@ public class Homepage {
 		else{
 
 
-			//redirect if user is signed in
-			return new ModelAndView("redirect:" + app_BASE_URL + "chat" );
+			//redirect if user is signed in to support page
+			return new ModelAndView("redirect:" + app_BASE_URL + "support" );
 		}
 	}
 }
