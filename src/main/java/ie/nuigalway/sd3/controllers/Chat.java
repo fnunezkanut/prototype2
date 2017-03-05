@@ -41,6 +41,8 @@ public class Chat {
 			//pass data to twig view
 			model.addAttribute("app_RANDOM", app_RANDOM );
 			model.addAttribute("app_BASE_URL", app_BASE_URL );
+			model.addAttribute("user_id", currentUser.getId()  );
+			model.addAttribute("user_email", currentUser.getEmail()  );
 
 			//return view name
 			return new ModelAndView("chat");

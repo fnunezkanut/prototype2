@@ -53,6 +53,7 @@ public class LoginSubmit {
 		}
 		catch (Exception e){ //TODO better exception catching here
 
+			//TODO EmptyResultDataAccessException
 			throw new ApplicationException( e.getMessage() );
 		}
 

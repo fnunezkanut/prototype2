@@ -39,13 +39,30 @@
     <div class="container-fluid">
 
 
+
         <div class="header clearfix">
             <nav>
                 <ul class="nav nav-pills pull-right">
-                    <li role="presentation"><a href="{{ app_BASE_URL }}" class="active">Home</a></li>
-                    <li role="presentation"><a href="{{ app_BASE_URL }}">About</a></li>
-                    <li role="presentation"><a href="{{ app_BASE_URL }}">Menu option 3</a></li>
-                    <li role="presentation"><a href="{{ app_BASE_URL }}login" id="contact-support">Contact Support [Live Chat]</a></li>
+
+
+                    {% if user_id > 0 %}
+
+                        {# this block is shown to signed in user #}
+                        <li role="presentation"><a href="{{ app_BASE_URL }}chat">Welcome back {{ user_email }}</a></li>
+                        <li role="presentation"><a href="{{ app_BASE_URL }}logout" id="contact-support">Logout</a></li>
+                        {# this block is shown to signed in user #}
+
+                    {% else %}
+
+                        {# user not registered #}
+                        <li role="presentation"><a href="{{ app_BASE_URL }}" class="active">Home</a></li>
+                        <li role="presentation"><a href="{{ app_BASE_URL }}">About</a></li>
+                        <li role="presentation"><a href="{{ app_BASE_URL }}">Menu option 3</a></li>
+                        <li role="presentation"><a href="{{ app_BASE_URL }}login" id="contact-support">Customer Login</a></li>
+                        {# user not registered #}
+
+                    {% endif %}
+
                 </ul>
             </nav>
             <h3 id="logo">Some Company name</h3>
