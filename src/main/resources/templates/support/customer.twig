@@ -2,7 +2,7 @@
 {# using master template #}
 
 
-{% block title %}Customer Support Issues{%endblock%}
+{% block title %}Customer Support Center{%endblock%}
 
 
 {% block content %}
@@ -13,11 +13,31 @@
 
         <div id="chatPanel" class="panel panel-default text-center">
             <div class="panel-heading">
-                <h1 class="panel-title">Customer Support Issues</h1>
+                <h1 class="panel-title">Customer Support Center</h1>
             </div>
             <div class="panel-body" style="text-align: left;" id="chatPanelBody">
 
+                <ul class="nav nav-pills nav-justified">
 
+                    <li role="presentation" class="active"><a href="#">Create a new issue</a></li>
+
+                    <li role="presentation"><a href="{{ app_BASE_URL }}/history">View past issues</a></li>
+                </ul>
+
+                <br /><hr /><br />
+
+                <form id="createForm">
+
+                    <div class="form-group">
+                        <label for="subjectFld">Subject:</label>
+                        <input type="text" class="form-control" id="subjectFld" placeholder="Short description of your issue" />
+                    </div>
+
+                    <br />
+                    <br />
+
+                    <button type="submit" class="btn btn-lg btn-success btn-block">Chat to Support</button>
+                </form>
             </div>
         </div>
 

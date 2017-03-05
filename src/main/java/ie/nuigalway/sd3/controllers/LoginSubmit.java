@@ -5,9 +5,7 @@ import ie.nuigalway.sd3.entities.User;
 import ie.nuigalway.sd3.services.UserService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,8 +37,6 @@ public class LoginSubmit {
 
 		//convert the posted password into md5 hash
 		String passwordHash = DigestUtils.md5Hex(pass).toUpperCase();
-
-		System.out.println( passwordHash );
 
 		//fetch user from database given email and passhash
 		User dbUser = new User();

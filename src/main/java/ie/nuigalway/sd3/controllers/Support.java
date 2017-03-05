@@ -48,7 +48,7 @@ public class Support {
 			//the view shown depends on whether the user is support person or a normal customer
 			String viewName = "support/customer";
 			if( currentUser.getIsSupport() == true ){
-				viewName = "support/admin";
+				viewName = "support/support";
 			}
 
 			//return view name

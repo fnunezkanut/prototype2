@@ -42,52 +42,52 @@
 
 {% block extra_js %}
     <script type="text/javascript">
-        $(document).ready(function(){
+		$(document).ready(function () {
 
 
-            var _chatUrl    = '{{ app_BASE_URL }}chat';
-            var _currentUrl = '{{ app_BASE_URL }}login';
-            var _loginUrl   = '{{ app_BASE_URL }}login/submit';
+			var _chatUrl    = '{{ app_BASE_URL }}support';
+			var _currentUrl = '{{ app_BASE_URL }}login';
+			var _loginUrl   = '{{ app_BASE_URL }}login/submit';
 
 
-            $( "#contactForm" ).submit(function( event ) {
+			$("#contactForm").submit(function (event) {
 
-                event.preventDefault();
+				event.preventDefault();
 
-                var password    = $('#passwordFld').val();
-                var email       = $('#emailFld').val();
+				var password = $('#passwordFld').val();
+				var email    = $('#emailFld').val();
 
-                //clear container
-                $('#chatPanelBody').empty().append('signing in...');
+				//clear container
+				$('#chatPanelBody').empty().append('signing in...');
 
-                //send ajax request
-                $.ajax({
-                    type: 		"POST",
-                    dataType: 	"json",
-                    url: 		_loginUrl,
-                    data: 		{
-                        "email"		:	email,
-                        "pass"      :   password
-                    },
-                    success: function( data, textStatus, xhr ){
+				//send ajax request
+				$.ajax({
+					type: "POST",
+					dataType: "json",
+					url: _loginUrl,
+					data: {
+						"email": email,
+						"pass": password
+					},
+					success: function (data, textStatus, xhr) {
 
-                        if ( data.status == 'ok' ) {
+						if (data.status == 'ok') {
 
-                            window.location = _chatUrl;
-                        }
-                        else{
+							window.location = _chatUrl;
+						}
+						else {
 
-                            alert("an error has occurred, try again");
-                            window.location = _currentUrl;
-                        }
-                    },
-                    error: function( xhr, textStatus, errorThrown ){
+							alert("an error has occurred, try again");
+							window.location = _currentUrl;
+						}
+					},
+					error: function (xhr, textStatus, errorThrown) {
 
-                        alert("an error has occurred, try again");
-                        window.location = _currentUrl;
-                    }
-                });
-            });
-        });
+						alert("an error has occurred, try again");
+						window.location = _currentUrl;
+					}
+				});
+			});
+		});
     </script>
 {% endblock %}
