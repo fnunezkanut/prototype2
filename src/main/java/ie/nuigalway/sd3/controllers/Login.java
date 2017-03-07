@@ -16,39 +16,41 @@ import javax.servlet.http.HttpSession;
 public class Login {
 
 	//from .properties
-	@Value("${app.RANDOM}")
+	@Value( "${app.RANDOM}" )
 	String app_RANDOM;
-	@Value("${app.BASE_URL}")
+	@Value( "${app.BASE_URL}" )
 	String app_BASE_URL;
 
 
 	//shows login page
 	@RequestMapping(
-			value = "/login",
-			produces = MediaType.TEXT_HTML_VALUE
+		value = "/login",
+		produces = MediaType.TEXT_HTML_VALUE
 	)
 	public ModelAndView action(
-			ModelMap model,
-			HttpSession session
-	) throws ApplicationException {
+		ModelMap model,
+		HttpSession session
+	                          )
+	throws
+	ApplicationException {
 
 
 		//get current user from session
-		User currentUser = (User)session.getAttribute( "currentUser" );
-		if( currentUser == null ){
+		User currentUser = (User) session.getAttribute( "currentUser" );
+		if ( currentUser == null ) {
 
 			//pass data to twig view
-			model.addAttribute("app_RANDOM", app_RANDOM );
-			model.addAttribute("app_BASE_URL", app_BASE_URL );
+			model.addAttribute( "app_RANDOM", app_RANDOM );
+			model.addAttribute( "app_BASE_URL", app_BASE_URL );
 
 			//return view name
-			return new ModelAndView("login");
+			return new ModelAndView( "login" );
 		}
-		else{
+		else {
 
 
 			//redirect if user is signed in to support page
-			return new ModelAndView("redirect:" + app_BASE_URL + "support" );
+			return new ModelAndView( "redirect:" + app_BASE_URL + "support" );
 		}
 	}
 }

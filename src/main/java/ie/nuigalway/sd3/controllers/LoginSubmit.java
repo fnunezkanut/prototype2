@@ -24,30 +24,33 @@ public class LoginSubmit {
 
 	//receives email+pass via ajax POST
 	@RequestMapping(
-			method= RequestMethod.POST,
-			value="/login/submit",
-			consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
-			produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+		method = RequestMethod.POST,
+		value = "/login/submit",
+		consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+		produces = MediaType.APPLICATION_JSON_UTF8_VALUE
 	)
-	public HashMap<String,String> action(
-			@RequestParam(value = "email") String email,
-			@RequestParam(value = "pass") String pass,
-			HttpSession session
-	) throws ApplicationException {
+	public HashMap<String, String> action(
+		@RequestParam( value = "email" ) String email,
+		@RequestParam( value = "pass" ) String pass,
+		HttpSession session
+	                                     )
+	throws
+	ApplicationException {
+
 
 		//convert the posted password into md5 hash
-		String passwordHash = DigestUtils.md5Hex(pass).toUpperCase();
+		String passwordHash = DigestUtils.md5Hex( pass ).toUpperCase();
 
 		//fetch user from database given email and passhash
 		User dbUser = new User();
-		try{
+		try {
 
 			dbUser = userService.getUserByEmailAndPasshash( email, passwordHash );
 
 			//save the user in session
 			session.setAttribute( "currentUser", dbUser );
 		}
-		catch (Exception e){ //TODO better exception catching here
+		catch (Exception e) { //TODO better exception catching here
 
 			//TODO EmptyResultDataAccessException
 			throw new ApplicationException( e.getMessage() );
@@ -55,7 +58,7 @@ public class LoginSubmit {
 
 
 		//output successful json
-		HashMap<String,String> jsonResponse = new HashMap<>(  );
+		HashMap<String, String> jsonResponse = new HashMap<>();
 		jsonResponse.put( "status", "ok" );
 		jsonResponse.put( "user_id", dbUser.getId().toString() );
 		return jsonResponse;

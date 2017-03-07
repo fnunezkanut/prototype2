@@ -32,7 +32,7 @@ public class Support {
 		if( currentUser == null ){
 
 			//redirect if not signed in
-			return new ModelAndView("redirect:" + app_BASE_URL + "signin" );
+			return new ModelAndView("redirect:" + app_BASE_URL + "login" );
 		}
 		else{
 

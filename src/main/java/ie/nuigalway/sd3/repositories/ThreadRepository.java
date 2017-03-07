@@ -10,7 +10,7 @@ public interface ThreadRepository {
 
     Thread getThread(Long id);
 
-    Long createThread(String title);
+    Long createThread(String title, Long customerId );
 
     void updateDtUpdated(Long id);
 }

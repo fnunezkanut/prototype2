@@ -1,11 +1,16 @@
 package ie.nuigalway.sd3.controllers;
 
+import ie.nuigalway.sd3.ApplicationException;
+import ie.nuigalway.sd3.entities.Thread;
 import ie.nuigalway.sd3.entities.User;
+import ie.nuigalway.sd3.services.ThreadService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -14,41 +19,75 @@ import javax.servlet.http.HttpSession;
 public class Chat {
 
 	//from .properties
-	@Value("${app.RANDOM}")
+	@Value( "${app.RANDOM}" )
 	String app_RANDOM;
-	@Value("${app.BASE_URL}")
+	@Value( "${app.BASE_URL}" )
 	String app_BASE_URL;
 
 
 
-	@RequestMapping("/chat")
+	@Autowired
+	private ThreadService threadService;
+
+
+	@RequestMapping(
+		value = "/chat",
+		produces = MediaType.TEXT_HTML_VALUE
+	)
 	public ModelAndView action(
-			ModelMap model,
-			HttpSession session
-	){
+		ModelMap model,
+		HttpSession session,
+		@RequestParam( "threadId" ) String threadId
+	                          )
+	throws
+	ApplicationException {
 
 
 		//get current user from session
-		User currentUser = (User)session.getAttribute( "currentUser" );
-		if( currentUser == null ){
+		User currentUser = (User) session.getAttribute( "currentUser" );
+		if ( currentUser == null ) {
 
 			//redirect if not signed in
-			return new ModelAndView("redirect:" + app_BASE_URL + "signin" );
+			return new ModelAndView( "redirect:" + app_BASE_URL + "login" );
 		}
-		else{
+		else {
+
+
+			//fetch this thread from database
+			Thread thread;
+			try {
+
+				thread = threadService.getThread( Long.parseLong( threadId ) );
+			}
+			catch (Exception e) { //TODO better exception catching here
+
+				throw new ApplicationException( e.getMessage() );
+			}
+
+
+			//if the current user is not support person check if he/she is allowed to access this thread
+			if( currentUser.getIsSupport() == false ){
+
+				if( !thread.getCustomer_user_id().equals( currentUser.getId() ) ){
+
+					throw new ApplicationException("You are not allowed to view this thread" );
+				}
+			}
 
 
 			//pass data to twig view
-			model.addAttribute("app_RANDOM", app_RANDOM );
-			model.addAttribute("app_BASE_URL", app_BASE_URL );
-			model.addAttribute("user_id", currentUser.getId()  );
-			model.addAttribute("user_email", currentUser.getEmail()  );
-			model.addAttribute("user_is_support", currentUser.getIsSupport()  );
+			model.addAttribute( "app_RANDOM", app_RANDOM );
+			model.addAttribute( "app_BASE_URL", app_BASE_URL );
+			model.addAttribute( "user_id", currentUser.getId() );
+			model.addAttribute( "user_email", currentUser.getEmail() );
+			model.addAttribute( "user_is_support", currentUser.getIsSupport() );
+			model.addAttribute( "thread_title", thread.getTitle() );
+
 
 
 			//the view shown depends on whether the user is support person or a normal customer
 			String viewName = "chat/customer";
-			if( currentUser.getIsSupport() == true ){
+			if ( currentUser.getIsSupport() == true ) {
 				viewName = "chat/support";
 			}
 

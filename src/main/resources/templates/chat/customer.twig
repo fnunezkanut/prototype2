@@ -2,7 +2,7 @@
 {# using master template #}
 
 
-{% block title %}Customer Chat{%endblock%}
+{% block title %}Customer Chat : {{ thread_title }} {%endblock%}
 
 
 {% block content %}
@@ -13,7 +13,7 @@
 
         <div id="chatPanel" class="panel panel-default text-center">
             <div class="panel-heading">
-                <h1 class="panel-title">Customer Chat</h1>
+                <h1 class="panel-title">{{ thread_title }}</h1>
             </div>
             <div class="panel-body" style="text-align: left;" id="chatPanelBody">
 

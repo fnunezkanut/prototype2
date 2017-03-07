@@ -26,9 +26,9 @@ public class ThreadService {
         return threadRepository.getThread( threadId );
     }
 
-    public Long createThread( String title ){
+    public Long createThread( String title, long customerId ){
 
-        return threadRepository.createThread( title );
+        return threadRepository.createThread( title, customerId );
     }
 
     public void updateDtUpdated( Long threadId ){
