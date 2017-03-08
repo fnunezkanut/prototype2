@@ -3,6 +3,12 @@ package ie.nuigalway.sd3.controllers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ie.nuigalway.sd3.entities.JsonResponse;
+import ie.nuigalway.sd3.entities.Thread;
+import ie.nuigalway.sd3.entities.User;
+import ie.nuigalway.sd3.services.MessageService;
+import ie.nuigalway.sd3.services.ThreadService;
+import ie.nuigalway.sd3.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -15,19 +21,29 @@ import java.util.Map;
 @Controller
 public class ChatWebsocket {
 
+	@Autowired
+	private ThreadService threadService;
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private MessageService messageService;
+
+
 	/**
 	 * inserts a new message into database, and responds with complete list of messages  in reverse order
+	 *
 	 * @param threadId
 	 * @param jsonRequest
 	 * @return
-	 * @throws ApplicationException
 	 */
-	@MessageMapping("/thread/{threadId}")
-	@SendTo("/topic/chat")
+	@MessageMapping( "/thread/{threadId}" )
+	@SendTo( "/topic/chat" )
 	public JsonResponse action(
 		@DestinationVariable String threadId,
 		String jsonRequest
-	                                     ){
+	                          ) {
 
 
 		//parse our incoming JSON string to Map
@@ -35,26 +51,69 @@ public class ChatWebsocket {
 		try {
 
 			ObjectMapper mapper = new ObjectMapper();
-			jsonMap = mapper.readValue(jsonRequest, new TypeReference<Map<String, String>>(){} );
+			jsonMap = mapper.readValue( jsonRequest, new TypeReference<Map<String, String>>() {
+			} );
 		}
-		catch ( IOException e) {
+		catch (IOException e) {
+
+			return new JsonResponse( "error", e.getMessage() );
+		}
+
+
+
+		//fetch user from database given user_id
+		User dbUser = new User();
+		try {
+
+			dbUser = userService.getUser(  Long.parseLong( jsonMap.get( "user_id" ) ) );
+		}
+		catch (Exception e) {
 
 			return new JsonResponse("error", e.getMessage() );
 		}
 
 
-		//extract user id of posting user
-		long userId = Long.parseLong( jsonMap.get( "user_id" ) );
+
+		//fetch this thread
+		Thread dbThread = new Thread();
+		try {
+
+			dbThread = threadService.getThread( Long.parseLong( threadId ) );
+		}
+		catch (Exception e) {
+
+			return new JsonResponse("error", e.getMessage() );
+		}
 
 
-		//check such a user exists
+		//check this user is allowed to respond to this thread (either customer who created it or customer support)
+		if( ( dbThread.getCustomer_user_id().equals( dbUser.getId() ) ) || ( dbThread.getSupport_user_id().equals( dbUser.getId() ) ) ){
+
+			//all ok either user can add messages to this thread
+		}
+		else{
+
+			return new JsonResponse("error", "Not allowed to access this thread" );
+		}
+
+
+		//add new message to this thread
+		Long messageId;
+		try{
+
+			messageId = messageService.addMessageToThread( dbThread.getId(), dbUser.getId(), jsonMap.get( "message" ) );
+		}
+		catch (Exception e){
+
+			e.printStackTrace();
+			return new JsonResponse("error", e.getMessage() );
+		}
 
 
 
-		JsonResponse jsonResponse = new JsonResponse("ok", "test");
+		JsonResponse jsonResponse = new JsonResponse( "ok", "added" );
 		jsonResponse.put( "thread_id", threadId );
-		jsonResponse.put( "message", jsonMap.get( "message" ) );
-		jsonResponse.put( "user_id", jsonMap.get( "user_id" ) );
+		jsonResponse.put( "message_id", messageId.toString() );
 		return jsonResponse;
 	}
 }

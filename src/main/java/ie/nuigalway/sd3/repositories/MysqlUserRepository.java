@@ -50,7 +50,23 @@ public class MysqlUserRepository implements UserRepository{
 
 	@Override
 	public User getUser( Long id ) {
-		return null;
+
+		User user;
+		String sqlTxt = "SELECT * FROM users WHERE id=?";
+
+		//try to fetch a single entry from table
+		try{
+
+			user =  jdbcTemplate.queryForObject( sqlTxt, userMapperLambda, id );
+		}
+		catch (InvalidResultSetAccessException e) {
+			throw new RuntimeException(e);
+		}
+		catch (DataAccessException e) {
+			throw new RuntimeException(e);
+		}
+
+		return user;
 	}
 
 	@Override
@@ -79,5 +95,6 @@ public class MysqlUserRepository implements UserRepository{
 	@Override
 	public void updateDtUpdated( Long id ) {
 
+		//TODO update on login time
 	}
 }

@@ -8,8 +8,8 @@ public class Thread {
     private String title;
     private Date dt_created;
     private Date dt_updated;
-    private Long customer_user_id;
-    private Long support_user_id;
+    private Long customer_user_id   =   0L;
+    private Long support_user_id    =   0L;
 
 
     //constructors
