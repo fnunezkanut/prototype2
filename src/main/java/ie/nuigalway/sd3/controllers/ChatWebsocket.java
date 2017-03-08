@@ -1,10 +1,10 @@
 package ie.nuigalway.sd3.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ie.nuigalway.sd3.entities.JsonResponse;
+import ie.nuigalway.sd3.entities.*;
 import ie.nuigalway.sd3.entities.Thread;
-import ie.nuigalway.sd3.entities.User;
 import ie.nuigalway.sd3.services.MessageService;
 import ie.nuigalway.sd3.services.ThreadService;
 import ie.nuigalway.sd3.services.UserService;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -105,15 +106,38 @@ public class ChatWebsocket {
 		}
 		catch (Exception e){
 
-			e.printStackTrace();
 			return new JsonResponse("error", e.getMessage() );
 		}
 
 
+		//fetch all the messages for this thread (in reverse order)
+		List<Map<String,Object>> messages;
+		try{
+
+			messages = messageService.getMessagesByThreadId( dbThread.getId() );
+		}
+		catch (Exception e){
+
+			return new JsonResponse("error", e.getMessage() );
+		}
+
+
+		//convert list to json
+		ObjectMapper mapper = new ObjectMapper();
+		String messagesJson = "";
+		try {
+
+			messagesJson = mapper.writeValueAsString( messages );
+		}
+		catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+
+
+
 
 		JsonResponse jsonResponse = new JsonResponse( "ok", "added" );
-		jsonResponse.put( "thread_id", threadId );
-		jsonResponse.put( "message_id", messageId.toString() );
+		jsonResponse.put( "messages", messagesJson );
 		return jsonResponse;
 	}
 }

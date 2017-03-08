@@ -25,6 +25,15 @@ body{
     top: -50px;
 }
 
+#messagesPanel{
+
+    background: rgba(245, 245, 245, 0.9);
+    width: 80%;
+    margin: 0px auto;
+    font-family: 'Roboto', sans-serif;
+    top: -50px;
+}
+
 
 .vertical-center {
     min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
@@ -60,3 +69,17 @@ body{
     font-weight: bold;
     color: white;
 }
+
+.messageTblName{
+
+    vertical-align: top;
+    width: 20%;
+    color: #041a3d;
+}
+
+.messageTblComment{
+
+    vertical-align: top;
+    font-family: 'Roboto', sans-serif;
+}
+

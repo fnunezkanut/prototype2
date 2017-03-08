@@ -58,6 +58,4 @@ public class JsonResponse {
 
 		this.payload.put( key, val );
 	}
-
-
 }

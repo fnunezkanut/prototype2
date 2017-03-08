@@ -19,6 +19,7 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 
 @Repository
@@ -50,17 +51,39 @@ public class MysqlMessageRepository implements MessageRepository {
 	};
 
 
+	//fetch messages by thread_id
 	@Override
-	public List<Message> getMessagesByThreadId( Long threadId ) {
-		return null;
+	public List<Map<String, Object>> getMessagesByThreadId( Long threadId ) {
+
+		String sqlTxt =
+			"SELECT messages.*, users.name FROM messages " +
+				"LEFT OUTER JOIN users ON users.id = messages.user_id " +
+				"WHERE thread_id = ? ORDER BY messages.id DESC";
+		List<Map<String, Object>> messages;
+
+		//try to fetch all messages
+		try {
+
+			messages = jdbcTemplate.queryForList( sqlTxt, threadId );
+		}
+		catch (InvalidResultSetAccessException e) {
+			throw new RuntimeException( e );
+		}
+		catch (DataAccessException e) {
+			throw new RuntimeException( e );
+		}
+
+
+		return messages;
 	}
+
 
 	//create a new message and return autoincremented unique id
 	@Override
 	public Long addMessageToThread( Long threadId, Long userId, String comment ) {
 
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-		String    sqlTxt    = "INSERT INTO messages(user_id,thread_id,comment,dt_created) VALUES(?,?,?,?)";
+		String    sqlTxt    = "INSERT INTO messages(thread_id,user_id,comment,dt_created) VALUES(?,?,?,?)";
 
 
 		//current time used at insert time
@@ -85,12 +108,11 @@ public class MysqlMessageRepository implements MessageRepository {
 			                   );
 		}
 		catch (InvalidResultSetAccessException e) {
-			e.printStackTrace();
+
 			throw new RuntimeException( e );
 		}
 		catch (DataAccessException e) {
 
-			e.printStackTrace();
 			throw new RuntimeException( e );
 		}
 
