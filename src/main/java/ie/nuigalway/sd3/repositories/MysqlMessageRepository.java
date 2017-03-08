@@ -56,9 +56,7 @@ public class MysqlMessageRepository implements MessageRepository {
 	public List<Map<String, Object>> getMessagesByThreadId( Long threadId ) {
 
 		String sqlTxt =
-			"SELECT messages.*, users.name FROM messages " +
-				"LEFT OUTER JOIN users ON users.id = messages.user_id " +
-				"WHERE thread_id = ? ORDER BY messages.id DESC";
+			"SELECT messages.*, users.name, users.is_support FROM messages LEFT OUTER JOIN users ON users.id = messages.user_id WHERE thread_id = ? ORDER BY messages.id DESC";
 		List<Map<String, Object>> messages;
 
 		//try to fetch all messages

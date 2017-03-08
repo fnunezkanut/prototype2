@@ -98,16 +98,21 @@ public class ChatWebsocket {
 		}
 
 
-		//add new message to this thread
-		Long messageId;
-		try{
+		//only add a message if its larger than 1 character in length
+		String message = jsonMap.get( "message" );
+		if( message.length() > 1 ){
 
-			messageId = messageService.addMessageToThread( dbThread.getId(), dbUser.getId(), jsonMap.get( "message" ) );
-		}
-		catch (Exception e){
+			//add new message to this thread
+			try{
 
-			return new JsonResponse("error", e.getMessage() );
+				messageService.addMessageToThread( dbThread.getId(), dbUser.getId(), message );
+			}
+			catch (Exception e){
+
+				return new JsonResponse("error", e.getMessage() );
+			}
 		}
+
 
 
 		//fetch all the messages for this thread (in reverse order)

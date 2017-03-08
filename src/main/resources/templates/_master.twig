@@ -48,7 +48,7 @@
                     {% if user_id > 0 %}
 
                         {# this block is shown to signed in user #}
-                        <li role="presentation"><a href="{{ app_BASE_URL }}support">Welcome back {{ user_email }}</a></li>
+                        <li role="presentation"><a href="{{ app_BASE_URL }}support" style="color: darkorange;">Welcome back {{ user_email }}</a></li>
                         <li role="presentation"><a href="{{ app_BASE_URL }}logout" id="contact-support">Logout</a></li>
                         {# this block is shown to signed in user #}
 
@@ -65,7 +65,7 @@
 
                 </ul>
             </nav>
-            <h3 id="logo">Some Company name</h3>
+            <h3 id="logo">Chatplusplus</h3>
         </div>
 
         {% block content %}

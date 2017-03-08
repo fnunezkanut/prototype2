@@ -133,8 +133,12 @@
 	//once the page completes loading
 	$(document).ready(function () {
 
+
+
 		//connect to websocket when page loads
 		connect();
+
+		$('#chatText').focus();
 
 
 		//when either enter is pressed or submit button is clicked we send the chat text
