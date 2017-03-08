@@ -17,19 +17,38 @@
             </div>
             <div class="panel-body" style="text-align: left;" id="chatPanelBody">
 
+				<div class="btn-group btn-group-justified" role="group" aria-label="...">
+					<div class="btn-group" role="group">
 
+						<button id="connectBtn" type="button" class="btn btn-primary">Connect to live support chat</button>
+
+					</div>
+
+					<div class="btn-group" role="group">
+
+						<button id="disconnectBtn" type="button" class="btn btn-default">Disconnect</button>
+
+					</div>
+				</div>
+
+				<br />
+
+				<form class="form-inline" role="form" id="chatFrm" onsubmit="return false">
+
+					<div class="col-md-10">
+						<input type="text" class="form-control" id="chatText" name="chatText" style="width: 99%;"  autocomplete="off" />
+					</div>
+					<div class="col-md-2">
+						<button id="submitBtn" class="btn btn-primary" type="button" data-loading-text="wait...">submit</button>
+					</div>
+
+				</form>
+
+
+				{#
                 <div class="row">
-                    <div class="col-md-6">
-                        <form class="form-inline">
-                            <div class="form-group">
-                                <label for="connect">WebSocket connection:</label>
-                                <button id="connect" class="btn btn-default" type="button">Connect</button>
-                                <button id="disconnect" class="btn btn-default" type="button" disabled="disabled">Disconnect
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-md-6">
+
+                    <div class="col-md-12">
                         <form class="form-inline">
                             <div class="form-group">
                                 <label for="name">What is your name?</label>
@@ -39,6 +58,8 @@
                         </form>
                     </div>
                 </div>
+
+
                 <div class="row">
                     <div class="col-md-12">
                         <table id="conversation" class="table table-striped">
@@ -52,6 +73,7 @@
                         </table>
                     </div>
                 </div>
+                 #}
 
 
             </div>
@@ -65,15 +87,20 @@
 
 {% block extra_js %}
 
+	<!-- we need sockjs and stomp libraries -->
+<script src="https://cdn.jsdelivr.net/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/sockjs/1.1.2/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script type="application/javascript">
 
-	var stompClient = null;
+	var connid 			= 	null;
+	var stompClient 	= 	null;
+	var _submitBtn		=   $('#submitBtn'); //attach onto submit button
 
 	function setConnected(connected) {
-		$("#connect").prop("disabled", connected);
-		$("#disconnect").prop("disabled", !connected);
+
+		$("#connectBtn").prop("disabled", connected);
+		$("#disconnectBtn").prop("disabled", !connected);
 		if (connected) {
 			$("#conversation").show();
 		}
@@ -85,14 +112,14 @@
 
 	//conects to our websocket
 	function connect() {
-		var socket = new SockJS("/ws");
+
+		var socket 	= 	new SockJS("/stomp");
 		stompClient = Stomp.over(socket);
 		stompClient.connect({}, function (frame) {
+
+			console.log("Connected");
 			setConnected(true);
-
-			console.log('Connected: ' + frame);
-
-			stompClient.subscribe('/topic/greetings', function ( serverMessage ) {
+			stompClient.subscribe('/topic/chat', function ( serverMessage ) {
 
 				//parse message coming from server
 				var decodedMessage = jQuery.parseJSON( serverMessage.body );
@@ -109,21 +136,60 @@
 		console.log("Disconnected");
 	}
 
-	function sendName() {
-		stompClient.send("/helloworld", {}, JSON.stringify({'name': $("#name").val()}));
-	}
+
 
 	function showGreeting(message) {
-		$("#greetings").append("<tr><td>" + message.message + "</td></tr>");
+		$("#greetings").append("<tr><td>" + message + "</td></tr>");
 	}
 
-	$(function () {
-		$("form").on('submit', function (e) {
-			e.preventDefault();
+
+
+	//triggered when we want to send a message via websocket
+	function submitChat(){
+
+		var chatText = $("#chatText").val();
+		_submitBtn.button('loading');
+
+		//send a message down the websocket
+		stompClient.send(
+			"/thread/{{ thread_id }}",
+			{},
+			JSON.stringify(
+				{
+					'message'	: chatText,
+					'user_id'	: {{ user_id }}
+				}
+			)
+		);
+	}
+
+
+
+	//once the page completes loading
+	$(document).ready(function () {
+
+
+		//when either enter is pressed or submit button is clicked we send the chat text
+		$('#chatFrm').keypress(function(e){
+
+			var keycode = (e.keyCode ? e.keyCode : e.which);
+			if(keycode == '13'){
+				submitChat();
+			}
 		});
-		$( "#connect" ).click(function() { connect(); });
-		$( "#disconnect" ).click(function() { disconnect(); });
-		$( "#send" ).click(function() { sendName(); });
+		$('#submitBtn').on("click", submitChat );
+
+
+
+		//attach event handlers to our buttons
+		$( "#connectBtn" ).click(function() {
+			connect();
+
+
+		});
+		$( "#disconnectBtn" ).click(function() {
+			disconnect();
+		});
 	});
 
 </script>

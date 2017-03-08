@@ -1,6 +1,5 @@
 package ie.nuigalway.sd3.controllers;
 
-import ie.nuigalway.sd3.ApplicationException;
 import ie.nuigalway.sd3.entities.Thread;
 import ie.nuigalway.sd3.entities.User;
 import ie.nuigalway.sd3.services.ThreadService;
@@ -38,9 +37,7 @@ public class Chat {
 		ModelMap model,
 		HttpSession session,
 		@RequestParam( "threadId" ) String threadId
-	                          )
-	throws
-	ApplicationException {
+	                          ){
 
 
 		//get current user from session
@@ -61,7 +58,7 @@ public class Chat {
 			}
 			catch (Exception e) { //TODO better exception catching here
 
-				throw new ApplicationException( e.getMessage() );
+				return new ModelAndView( "_error", "errorMsg", e.getMessage() );
 			}
 
 
@@ -70,7 +67,7 @@ public class Chat {
 
 				if( !thread.getCustomer_user_id().equals( currentUser.getId() ) ){
 
-					throw new ApplicationException("You are not allowed to view this thread" );
+					return new ModelAndView( "_error", "errorMsg", "You are not allowed to view this thread" );
 				}
 			}
 
@@ -82,7 +79,7 @@ public class Chat {
 			model.addAttribute( "user_email", currentUser.getEmail() );
 			model.addAttribute( "user_is_support", currentUser.getIsSupport() );
 			model.addAttribute( "thread_title", thread.getTitle() );
-
+			model.addAttribute( "thread_id", thread.getId() );
 
 
 			//the view shown depends on whether the user is support person or a normal customer

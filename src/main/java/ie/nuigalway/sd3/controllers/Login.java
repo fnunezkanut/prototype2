@@ -1,6 +1,5 @@
 package ie.nuigalway.sd3.controllers;
 
-import ie.nuigalway.sd3.ApplicationException;
 import ie.nuigalway.sd3.entities.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -29,11 +28,7 @@ public class Login {
 	)
 	public ModelAndView action(
 		ModelMap model,
-		HttpSession session
-	                          )
-	throws
-	ApplicationException {
-
+		HttpSession session ){
 
 		//get current user from session
 		User currentUser = (User) session.getAttribute( "currentUser" );

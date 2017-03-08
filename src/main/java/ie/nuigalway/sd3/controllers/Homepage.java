@@ -34,7 +34,7 @@ public class Homepage {
 			model.addAttribute("app_BASE_URL", app_BASE_URL );
 
 			//return view name
-			return new ModelAndView("homepage");
+			return new ModelAndView("homepage" );
 		}
 		else{
 

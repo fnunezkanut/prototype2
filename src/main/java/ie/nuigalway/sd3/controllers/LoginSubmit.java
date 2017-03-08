@@ -1,6 +1,6 @@
 package ie.nuigalway.sd3.controllers;
 
-import ie.nuigalway.sd3.ApplicationException;
+import ie.nuigalway.sd3.entities.JsonResponse;
 import ie.nuigalway.sd3.entities.User;
 import ie.nuigalway.sd3.services.UserService;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 
 @RestController
 public class LoginSubmit {
@@ -29,13 +28,11 @@ public class LoginSubmit {
 		consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 		produces = MediaType.APPLICATION_JSON_UTF8_VALUE
 	)
-	public HashMap<String, String> action(
+	public JsonResponse action(
 		@RequestParam( value = "email" ) String email,
 		@RequestParam( value = "pass" ) String pass,
 		HttpSession session
-	                                     )
-	throws
-	ApplicationException {
+	                                     ){
 
 
 		//convert the posted password into md5 hash
@@ -52,14 +49,12 @@ public class LoginSubmit {
 		}
 		catch (Exception e) { //TODO better exception catching here
 
-			//TODO EmptyResultDataAccessException
-			throw new ApplicationException( e.getMessage() );
+			return new JsonResponse("error", e.getMessage() );
 		}
 
 
 		//output successful json
-		HashMap<String, String> jsonResponse = new HashMap<>();
-		jsonResponse.put( "status", "ok" );
+		JsonResponse    jsonResponse = new JsonResponse( "ok", "signedin");
 		jsonResponse.put( "user_id", dbUser.getId().toString() );
 		return jsonResponse;
 	}

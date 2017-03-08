@@ -75,7 +75,7 @@
 
 						if (data.status == 'ok') {
 
-							window.location = '{{ app_BASE_URL }}chat?threadId=' + data.thread_id;
+							window.location = '{{ app_BASE_URL }}chat?threadId=' + data.payload.thread_id;
 						}
 						else {
 

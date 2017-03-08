@@ -73,17 +73,17 @@
 
 						if (data.status == 'ok') {
 
+							$('#chatPanelBody').empty().append("You have successfully signed in, redirecting..." );
 							window.location = _chatUrl;
 						}
 						else {
 
-							alert("an error has occurred, try again");
+							$('#chatPanelBody').empty().append("ERROR: " + data.message );
 							window.location = _currentUrl;
 						}
 					},
 					error: function (xhr, textStatus, errorThrown) {
 
-						alert("an error has occurred, try again");
 						window.location = _currentUrl;
 					}
 				});

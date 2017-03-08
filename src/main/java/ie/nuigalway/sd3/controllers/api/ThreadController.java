@@ -1,6 +1,6 @@
 package ie.nuigalway.sd3.controllers.api;
 
-import ie.nuigalway.sd3.ApplicationException;
+import ie.nuigalway.sd3.entities.JsonResponse;
 import ie.nuigalway.sd3.entities.Thread;
 import ie.nuigalway.sd3.entities.User;
 import ie.nuigalway.sd3.services.ThreadService;
@@ -28,15 +28,15 @@ public class ThreadController {
 			consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE
 	)
-	public HashMap<String,String> createThread(
+	public JsonResponse createThread(
 			HttpSession session,
 			@RequestParam("title") String title
-    ) throws ApplicationException {
+	                                ){
 
 		User currentUser = (User)session.getAttribute( "currentUser" );
 		if( currentUser == null ){
 
-			throw new ApplicationException( "Only signed-in users are allowed to create new threads" );
+			return new JsonResponse("error", "Current user is not signed in" );
 		}
 		else{
 
@@ -48,13 +48,12 @@ public class ThreadController {
 			}
 			catch (Exception e){
 
-				throw new ApplicationException( "An error occurred while inserting new thread into database" );
+				return new JsonResponse("error", e.getMessage() );
 			}
 
 
 			//output successful json
-			HashMap<String,String> jsonResponse = new HashMap<>(  );
-			jsonResponse.put( "status", "ok" );
+			JsonResponse jsonResponse = new JsonResponse("ok", "created" );
 			jsonResponse.put( "thread_id", Long.toString( newThreadId ) );
 			return jsonResponse;
 		}
