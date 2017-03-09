@@ -2,7 +2,6 @@ package ie.nuigalway.sd3.controllers;
 
 import ie.nuigalway.sd3.entities.User;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +23,7 @@ public class Homepage {
 			ModelMap model,
 			HttpSession session
 	){
+
 
 		//get current user from session
 		User currentUser = (User)session.getAttribute( "currentUser" );

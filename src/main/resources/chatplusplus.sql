@@ -41,8 +41,7 @@ CREATE TABLE `threads` (
   `title` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `dt_created` datetime DEFAULT NULL,
   `dt_updated` datetime DEFAULT NULL,
-  `customer_user_id` int(10) unsigned DEFAULT '0',
-  `support_user_id` int(10) unsigned DEFAULT '0' COMMENT '0=no support joined yet',
+  `customer_id` int(10) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 

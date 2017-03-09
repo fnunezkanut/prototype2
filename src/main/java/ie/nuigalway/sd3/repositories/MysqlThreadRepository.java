@@ -42,8 +42,7 @@ public class MysqlThreadRepository implements ThreadRepository{
 		thread.setTitle( rs.getString("title") );
 		thread.setDt_created( rs.getDate( "dt_created" ) );
 		thread.setDt_updated( rs.getDate( "dt_updated" ) );
-		thread.setCustomer_user_id( rs.getLong( "customer_user_id" ) );
-		thread.setSupport_user_id( rs.getLong( "support_user_id" ) );
+		thread.setCustomerId( rs.getLong( "customer_id" ) );
 		return thread;
 	};
 
@@ -100,7 +99,7 @@ public class MysqlThreadRepository implements ThreadRepository{
 	public Long createThread( String title, Long customerId ) {
 
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-		String sqlTxt = "INSERT INTO threads(title,dt_created,dt_updated,customer_user_id) VALUES(?,?,?,?)";
+		String sqlTxt = "INSERT INTO threads(title,dt_created,dt_updated,customer_id) VALUES(?,?,?,?)";
 
 
 		//current time used at insert time

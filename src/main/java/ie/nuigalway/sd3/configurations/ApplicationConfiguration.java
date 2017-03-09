@@ -33,7 +33,6 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter implements
 	private Environment env;
 
 
-
 	//mysql connection datasource
 	@Bean(name = "dataSource")
 	@Profile({"default","test","prod"})
@@ -79,7 +78,14 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter implements
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+		//static files in /projectName/main/resources/static/
 		registry.addResourceHandler("static/**").addResourceLocations("classpath:static/");
+
+		//webjar static files
+		if (!registry.hasMappingForPattern("/webjars/**")) {
+			registry.addResourceHandler("/webjars/**").addResourceLocations( "classpath:/META-INF/resources/webjars/");
+		}
 	}
 	//the bean and override above configures static file loading from public
 }

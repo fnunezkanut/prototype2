@@ -1,4 +1,4 @@
-{% extends "../_master.twig" %}
+{% extends "_master.twig" %}
 {# using master template #}
 
 
@@ -9,7 +9,7 @@
 
     <br />
 
-    <div class="row" id="messagesContainer">
+    <div class="row" id="centeredContainer">
 
         <div id="chatPanel" class="panel panel-default text-center">
             <div class="panel-heading">
@@ -46,9 +46,9 @@
 {% block extra_js %}
 
 	<!-- we need sockjs and stomp libraries -->
-<script src="https://cdn.jsdelivr.net/sockjs/1.1.2/sockjs.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script src="https://cdn.jsdelivr.net/momentjs/2.17.1/moment.min.js"></script>
+<script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
+<script src="/webjars/momentjs/2.17.1/min/moment.min.js"></script>
 <script type="application/javascript">
 
 
@@ -94,6 +94,9 @@
 
 		var chatText = $("#chatText").val();
 
+		//clear chat field
+		$("#chatText").val("");
+
 		//send a message down the websocket
 		stompClient.send(
 			"/thread/{{ thread_id }}",
@@ -118,9 +121,18 @@
 			//var dt = new Date( value.dt_created );
 			var formatted = moment( value.dt_created ).format('MM/DD/YYYY hh:mm a')
 
-			html 	+= 	'<tr>';
-			html 	+= 	'<td class="messageTblName"><strong>' + value.name + '</strong><br />' + formatted + '</td>';
+			//color in support replies in a different color
+			if( value.is_support == true ){
+
+				html 	+= 	'<tr class="warning">';
+			}
+			else{
+
+				html 	+= 	'<tr>';
+			}
+
 			html 	+= 	'<td class="messageTblComment">' + value.comment + '</td>';
+			html 	+= 	'<td class="messageTblName"><strong>' + value.name + '</strong><br />' + formatted + '</td>';
 			html 	+= 	'</tr>';
 		});
 		html 	+= 	'</table>';
@@ -133,13 +145,10 @@
 	//once the page completes loading
 	$(document).ready(function () {
 
-
-
 		//connect to websocket when page loads
 		connect();
 
 		$('#chatText').focus();
-
 
 		//when either enter is pressed or submit button is clicked we send the chat text
 		$('#chatFrm').keypress(function(e){
@@ -150,8 +159,6 @@
 			}
 		});
 		$('#submitBtn').on("click", submitChat );
-
-
 	});
 
 </script>

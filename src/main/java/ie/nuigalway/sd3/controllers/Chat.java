@@ -65,7 +65,7 @@ public class Chat {
 			//if the current user is not support person check if he/she is allowed to access this thread
 			if( currentUser.getIsSupport() == false ){
 
-				if( !thread.getCustomer_user_id().equals( currentUser.getId() ) ){
+				if( !thread.getCustomerId().equals( currentUser.getId() ) ){
 
 					return new ModelAndView( "_error", "errorMsg", "You are not allowed to view this thread" );
 				}
@@ -82,14 +82,8 @@ public class Chat {
 			model.addAttribute( "thread_id", thread.getId() );
 
 
-			//the view shown depends on whether the user is support person or a normal customer
-			String viewName = "chat/customer";
-			if ( currentUser.getIsSupport() == true ) {
-				viewName = "chat/support";
-			}
-
 			//return view name
-			return new ModelAndView( viewName );
+			return new ModelAndView( "chat" );
 		}
 	}
 }

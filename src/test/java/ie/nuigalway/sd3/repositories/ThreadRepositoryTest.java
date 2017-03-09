@@ -1,6 +1,5 @@
 package ie.nuigalway.sd3.repositories;
 
-import ie.nuigalway.sd3.Application;
 import ie.nuigalway.sd3.entities.Thread;
 import ie.nuigalway.sd3.services.ThreadService;
 import org.junit.After;
@@ -11,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
@@ -40,8 +37,7 @@ public class ThreadRepositoryTest {
 				"  title varchar(255) CHARACTER SET utf8 DEFAULT NULL,\n" +
 				"  dt_created datetime DEFAULT NULL,\n" +
 				"  dt_updated datetime DEFAULT NULL,\n" +
-				"  customer_user_id int(10) unsigned DEFAULT 0,\n" +
-				"  support_user_id int(10) unsigned DEFAULT 0,\n" +
+				"  customer_id int(10) unsigned DEFAULT 0,\n" +
 				"  PRIMARY KEY (id)\n" +
 				") ENGINE=InnoDB DEFAULT CHARSET=latin1;"
 		);

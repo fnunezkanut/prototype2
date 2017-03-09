@@ -8,8 +8,7 @@ public class Thread {
     private String title;
     private Date dt_created;
     private Date dt_updated;
-    private Long customer_user_id   =   0L;
-    private Long support_user_id    =   0L;
+    private Long customer_id   =   0L;
 
 
     //constructors
@@ -64,22 +63,13 @@ public class Thread {
         this.dt_updated = dt_updated;
     }
 
-    public Long getCustomer_user_id() {
-        return customer_user_id;
+    public Long getCustomerId() {
+        return customer_id;
     }
 
-    public void setCustomer_user_id( Long customer_user_id ) {
-        this.customer_user_id = customer_user_id;
+    public void setCustomerId( Long customer_id ) {
+        this.customer_id = customer_id;
     }
-
-    public Long getSupport_user_id() {
-        return support_user_id;
-    }
-
-    public void setSupport_user_id( Long support_user_id ) {
-        this.support_user_id = support_user_id;
-    }
-
     //getters and setters
 
 
@@ -105,8 +95,7 @@ public class Thread {
                 ", title='" + title + '\'' +
                 ", dt_created=" + dt_created +
                 ", dt_updated=" + dt_updated +
-                ", customer_user_id=" + customer_user_id +
-                ", support_user_id=" + support_user_id +
+                ", customer_id=" + customer_id +
                 '}';
     }
 }

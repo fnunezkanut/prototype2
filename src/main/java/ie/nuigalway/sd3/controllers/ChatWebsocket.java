@@ -88,13 +88,21 @@ public class ChatWebsocket {
 
 
 		//check this user is allowed to respond to this thread (either customer who created it or customer support)
-		if( ( dbThread.getCustomer_user_id().equals( dbUser.getId() ) ) || ( dbThread.getSupport_user_id().equals( dbUser.getId() ) ) ){
+		if( dbThread.getCustomerId().equals( dbUser.getId() )  ){
 
-			//all ok either user can add messages to this thread
+			//all ok this thread belongs to this customer
 		}
 		else{
 
-			return new JsonResponse("error", "Not allowed to access this thread" );
+			//check if this user is a support person
+			if( dbUser.getIsSupport() == true ){
+
+				//all ok current user is a support person so allowed to respond
+			}
+			else{
+
+				return new JsonResponse("error", "Not allowed to access this thread" );
+			}
 		}
 
 
