@@ -1,12 +1,11 @@
+import java.text.SimpleDateFormat
+
 buildscript {
-	ext {
-		springBootVersion = '1.5.1.RELEASE'
-	}
 	repositories {
 		mavenCentral()
 	}
 	dependencies {
-		classpath('org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}')
+		classpath('org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE')
 		classpath('org.springframework:springloaded:1.2.6.RELEASE')
 	}
 }
@@ -16,9 +15,18 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
+
+def versionMajor = 0
+def getDate() {
+	def date = new Date()
+	def formattedDate = date.format('yyyyMMddHHmmss')
+	return formattedDate
+}
+
+
 jar {
 	baseName = 'prototype2'
-	version = '0.0.1-SNAPSHOT'
+	version = "${versionMajor}-beta-build-${getDate()}"
 }
 
 sourceCompatibility = 1.8
