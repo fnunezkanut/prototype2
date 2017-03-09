@@ -1,4 +1,3 @@
-import java.text.SimpleDateFormat
 
 buildscript {
 	repositories {
@@ -16,7 +15,7 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
 
-def versionMajor = 0
+//gets a formatted date
 def getDate() {
 	def date = new Date()
 	def formattedDate = date.format('yyyyMMddHHmmss')
@@ -26,7 +25,7 @@ def getDate() {
 
 jar {
 	baseName = 'prototype2'
-	version = "${versionMajor}-beta-build-${getDate()}"
+	version = "v0.1-build-${getDate()}"
 }
 
 sourceCompatibility = 1.8
@@ -75,12 +74,5 @@ dependencies {
 			'junit:junit:4.12',
 			'org.hamcrest:hamcrest-library:1.3'
 	)
-}
-
-idea {
-	module {
-		inheritOutputDirs = false
-		outputDir = file('$buildDir/classes/main/')
-	}
 }
 
