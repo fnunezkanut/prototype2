@@ -11,8 +11,8 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
+
 
 
 //gets a formatted date
@@ -36,6 +36,8 @@ repositories {
 	mavenCentral()
 	jcenter()
 }
+
+
 
 
 dependencies {
